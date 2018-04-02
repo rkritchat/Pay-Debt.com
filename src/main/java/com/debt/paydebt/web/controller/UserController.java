@@ -13,7 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Controller
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -24,6 +27,13 @@ public class UserController {
     @Autowired
     private UserIdRepository userIdRepository;
 
+    @GetMapping(value = "/aa")
+    public String test(Model model){
+        UserId x = new UserId("x","b");
+        model.addAttribute("userId",x);
+        return  "userdetail";
+    }
+
     @PostMapping
     public String login(@RequestBody UserInformationForm form, Model model){
         UserDetail userDetail = userService.login(form);
@@ -33,33 +43,18 @@ public class UserController {
     @PutMapping
     public String register(@RequestBody UserInformationForm form){
         userService.register(form);
+        return "register";
+    }
+
+    @PatchMapping("/update/detail")
+    public String updateUserDetail(@RequestBody UserInformationForm form){
+        userService.updateUserDetail(form);
+       return "register";
+    }
+
+    @PatchMapping("/update/id")
+    public String updateUserPwd(@RequestBody  UserInformationForm form){
+        userService.updatePwd(form);
         return "";
-    }
-
-    @PatchMapping("/detail")
-    public ResponseEntity updateUserDetail(@RequestBody UserDetail userDetail){
-        if(!isValidIdAndPwd(userDetail.getUserId().getId(),userDetail.getUserId().getPwd())){
-            return new ResponseEntity<Object>("Invalid User or Password",HttpStatus.OK);
-        }else{
-            userDetailRepository.save(userDetail);
-            return new ResponseEntity<Object>("Update User detail Successfully",HttpStatus.OK);
-        }
-    }
-
-    @PatchMapping("/id")
-    public ResponseEntity updateUserPwd(@RequestBody UserId userId){
-        if(!isValidIdAndPwd(userId.getId(),userId.getPwd())) {
-            return new ResponseEntity<Object>("Invalid User or Password",HttpStatus.OK);
-        }else{
-            userIdRepository.save(userId);
-            return new ResponseEntity<Object>("Update Password Successfully",HttpStatus.OK);
-        }
-    }
-
-    public boolean isValidIdAndPwd(String id, String pwd) {
-        if (userIdRepository.findByIdAndPwd(id, pwd) == null) {
-            return true;
-        }
-        return false;
     }
 }

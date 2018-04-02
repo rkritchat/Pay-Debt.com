@@ -11,6 +11,7 @@ public class UserId {
     private String id;
     @NotEmpty
     private String pwd;
+    public UserId(){}
 
     public UserId(@NotEmpty String id, @NotEmpty String pwd) {
         this.id = id;

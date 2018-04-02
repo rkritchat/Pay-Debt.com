@@ -7,8 +7,6 @@ import com.debt.paydebt.repository.UserIdRepository;
 import com.debt.paydebt.service.userservice.UserService;
 import com.debt.paydebt.web.form.UserInformationForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,25 +30,50 @@ public class UserServiceImpl implements UserService{
         if(userIdRepository.findById(registerForm.getId())!=null){
             return null;
         }else{
-            userIdRepository.save(new UserId(registerForm.getId(),registerForm.getPwd()));
-            userDetailRepository.save(new UserDetail(
-                    registerForm.getId(),
-                    registerForm.getFirstName(),
-                    registerForm.getLastName(),
-                    registerForm.getEmail(),
-                    registerForm.getTell()
-            ));
+            saveUserId(registerForm);
+            saveUserDetail(registerForm);
             return userDetailRepository.findById(registerForm.getId());
         }
     }
 
     @Override
     public UserDetail updateUserDetail(UserInformationForm registerForm) {
-        return null;
+        if(!isValidIdAndPwd(registerForm.getId(),registerForm.getPwd())){
+            return null;
+        }else{
+            saveUserDetail(registerForm);
+            return userDetailRepository.findById(registerForm.getId());
+        }
     }
 
     @Override
     public UserDetail updatePwd(UserInformationForm registerForm) {
-        return null;
+        if(!isValidIdAndPwd(registerForm.getId(),registerForm.getPwd())){
+            return null;
+        }else{
+            userIdRepository.save(new UserId(registerForm.getId(),registerForm.getPwd()));
+            return userDetailRepository.findById(registerForm.getId());
+        }
+    }
+
+    private void saveUserDetail(UserInformationForm registerForm){
+        userDetailRepository.save(new UserDetail(
+                registerForm.getId(),
+                registerForm.getFirstName(),
+                registerForm.getLastName(),
+                registerForm.getEmail(),
+                registerForm.getTell()
+        ));
+    }
+
+    private void saveUserId(UserInformationForm registerForm){
+        userIdRepository.save(new UserId(registerForm.getId(),registerForm.getPwd()));
+    }
+
+    public boolean isValidIdAndPwd(String id, String pwd) {
+        if (userIdRepository.findByIdAndPwd(id, pwd) == null) {
+            return true;
+        }
+        return false;
     }
 }
