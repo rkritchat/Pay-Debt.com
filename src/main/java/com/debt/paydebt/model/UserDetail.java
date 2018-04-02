@@ -22,6 +22,8 @@ public class UserDetail {
     @JoinColumn(name = "id")
     private UserId userId;
 
+    public UserDetail(){}
+
     public UserDetail(@NotEmpty String id, @NotEmpty String firstName, String lastName, String email, String tell) {
         this.id = id;
         this.firstName = firstName;

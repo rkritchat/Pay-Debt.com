@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Pay Debt</title>
 </head>
 <body>
-    <form>
+    <h3 th:if="${errorMessage}"> <p th:text="${errorMessage}"/> </h3>
+    <form method="post" action="/user">
         <table>
             <tr>
                 <td>ID :</td>
@@ -17,7 +17,7 @@
             </tr>
             <tr>
                 <td><input type="submit" value="Login"/></td>
-                <td><input type="button" value="Clear"/> </td>
+                <td><input type="button" value="Register" onclick="window.location.href='/register'"/> </td>
             </tr>
         </table>
     </form>

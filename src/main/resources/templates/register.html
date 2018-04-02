@@ -1,42 +1,47 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title>Register</title>
 </head>
 <body>
-	<form>
+	<h2 th:if="${message}"><p th:text="${message}"/></h2>
+	<form method="post" action="/user">
 		<table>
 			<tr>
 				<td>ID :</td>
-				<td><input type="text" name="id"/> </td>
+				<td><input type="text" name="id" th:value="${userDetail} ? ${userDetail.id}"/> </td>
 			</tr>
+			<p th:if="!${userDetail}">
 			<tr>
 				<td>Password :</td>
-				<td><input type="password" name="pwd"/></td>
+				<td><input type="password" name="pwd" /></td>
 			</tr>
 			<tr>
 				<td>Re-Password :</td>
 				<td><input type="rePassword" name="rePwd"></td>
 			</tr>
+			</p>
 			<tr>
 				<td>Name :</td>
-				<td><input type="text" name="name"/></td>
+				<td><input type="text" name="firstName" th:value="${userDetail} ? ${userDetail.firstName}"/></td>
 			</tr>
 			<tr>
 				<td>Last Name :</td>
-				<td><input type="lastName" name="lastName"/></td>
+				<td><input type="lastName" name="lastName" th:value="${userDetail} ? ${userDetail.lastName}"/></td>
 			</tr>
 			<tr>
 				<td>E-mail :</td>
-				<td><input type="email" name="email"/></td>
+				<td><input type="email" name="email" th:value="${userDetail} ? ${userDetail.email}"/></td>
 			</tr>
 			<tr>
 				<td>Tell :</td>
-				<td><input type="tell" name="tell"></td>
+				<td><input type="tell" name="tell" th:value="${userDetail} ? ${userDetail.tell}"></td>
 			</tr>
 			<tr>
 				<td><input type="submit" value="Register"/></td>
 				<td><input type="button" value="Clear"/> </td>
 			</tr>
+			<input type="hidden" name="_method" value="PUT">
 		</table>
 	</form>
 </body>
