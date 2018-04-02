@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -27,9 +29,9 @@ public class UserController {
     }
 
     @PutMapping
-    public String register(@ModelAttribute UserInformationForm form, Model model){
+    public String register(@Valid @ModelAttribute UserInformationForm form, Model model){
         model.addAttribute("message","Create user Successfully");
-        model.addAttribute("userDetail",userService.register(form));
+        model.addAttribute("userDetail", userService.register(form));
         return "register";
     }
 
